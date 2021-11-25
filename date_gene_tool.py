@@ -45,8 +45,9 @@ if len(df_query) != 0:
                 data = x[i]
                 df_dict[i] = data
 else:
-    x = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/demo.csv",
-                    index_col = 0)
+#     x = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/demo.csv",
+#                     index_col = 0) # local
+    x = pd.read_csv("demo.csv", index_col = 0) # github
     testname = "Demo"
     df_dict[testname] = x
 
@@ -84,7 +85,8 @@ def get_table_download_link(df): # keeping just in case download button fails
 ########################################### HGNC Reference Table ####################################################
 @st.cache
 def clean_ref():
-    for_ref = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/hgnc-symbol-check.csv")
+#     for_ref = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/hgnc-symbol-check.csv") # local
+    for_ref = pd.read_csv("hgnc-symbol-check.csv") # github
     for_ref.reset_index(drop=False,inplace=True)
     for_ref.columns = for_ref.iloc[0,:]
     for_ref.drop(index=0, inplace=True)
