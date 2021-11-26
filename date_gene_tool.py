@@ -16,16 +16,17 @@ from streamlit_tags import st_tags, st_tags_sidebar
 
 st.title("Gene Updater")
 st.subheader("A Streamlit web tool that autocorrects and updates for Excel misidentified gene names")
+st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
 st.markdown('''
 When gene expression datasets are opened with Excel under default settings, a recurring problem where gene names are converted to dates occurs. 
 With this web tool, the dates will be converted back to their new HGNC symbols. These new gene names are more resilient to gene-to-date conversions in Excel.
 
-If no datasets are uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions
+If no datasets are uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions.
 ''')
 
 if st.sidebar.checkbox("Read the Docs", value=False):
     st.markdown("# Date-to-gene-converter")
-    st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
+#     st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
     st.markdown('''
     The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC). The running instance of the app is deployed at: "https://share.streamlit.io/kuanrongchan/date-to-gene-converter/main/date_gene_tool.py"
 
@@ -103,9 +104,9 @@ def get_table_download_link(df): # keeping just in case download button fails
 ########################################### HGNC Reference Table ####################################################
 @st.cache
 def clean_ref():
-#     for_ref = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/hgnc-symbol-check.csv") # local
+    # for_ref = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/hgnc-symbol-check.csv") # local
     for_ref = pd.read_csv("hgnc-symbol-check2.csv") # github
-    for_ref.reset_index(drop=False,inplace=True)
+    for_ref.reset_index(drop=True,inplace=True)
     for_ref.columns = for_ref.iloc[0,:]
     for_ref.drop(index=0, inplace=True)
     for_ref.drop(columns="Match type", inplace=True)
