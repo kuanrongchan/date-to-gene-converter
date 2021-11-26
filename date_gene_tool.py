@@ -28,7 +28,7 @@ if st.sidebar.checkbox("Read the Docs", value=False):
     st.markdown("# Documentation")
 #            st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
     st.markdown('''
-    The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC)."
+    The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC).
 
     # Instructions for using web tool
     Users can upload a single or multiple .csv or .xlsx files. Ensure that the first column contains the gene names. A checkbox is provided for users to inspect their uploaded data. If no data is uploaded, a demo dataset consisting of a restricted list of genes are pre-loaded. Users may use the pre-loaded demo dataset to explore the features and functionalities of the web tool.
