@@ -289,7 +289,7 @@ def completed():
     st.subheader("Converted Dataframes")
     with st.expander("Check dataframe and download here", expanded=False):
         download = list(cleaned_dict.values())
-        search = st.text_input("Search the genes to see the changes here", help="Search the new gene symbols")
+        search = st.text_input("Search bar to check for converted genes", help="Search the new gene symbols")
         genes = search.replace(";", ",").replace(" ", ",").split(',')
         gene_final = [x.upper() for x in genes if x != ""]
         for k,v in cleaned_dict.items():
