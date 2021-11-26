@@ -14,17 +14,17 @@ import streamlit as st
 from streamlit_tags import st_tags, st_tags_sidebar
 
 
-st.title("Date to Gene Converter")
+st.title("Gene Updater: A Streamlit web tool that autocorrects and updates for Excel misidentified gene names")
 st.markdown('''
-With this tool, the date genes often found when using Excel to open data files containing dates like MARC1 or SEPT4
-can be converted to their new HGNC symbols to prevent conversion back to dates when opening these files in Excel.
+When gene expression datasets are opened with Excel under default settings, a recurring problem where gene names are converted to dates occurs. 
+With this web tool, the dates will be converted back to their new HGNC symbols. These new gene names are more silient to gene-to-date conversions in Excel.
 
 If nothing is uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions
 ''')
 
 ################################################# File Uploader ########################################################
 df_query = st.sidebar.file_uploader(
-    'Upload your .csv/.xlsx files here with the first column as the index.',
+    'Upload your .csv/.xlsx files here with the first column as gene names. If no data is uploaded, a demo dataset will be pre-loaded',
     accept_multiple_files=True)
 
 df_dict = {}
