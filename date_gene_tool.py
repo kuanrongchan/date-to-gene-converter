@@ -86,7 +86,7 @@ def get_table_download_link(df): # keeping just in case download button fails
 @st.cache
 def clean_ref():
 #     for_ref = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/hgnc-symbol-check.csv") # local
-    for_ref = pd.read_csv("hgnc-symbol-check2.csv") # github
+    for_ref = pd.read_csv("hgnc-symbol-check.csv") # github
     for_ref.reset_index(drop=False,inplace=True)
     for_ref.columns = for_ref.iloc[0,:]
     for_ref.drop(index=0, inplace=True)
@@ -289,7 +289,7 @@ def completed():
     st.subheader("Converted Dataframes")
     with st.expander("Check dataframe and download here", expanded=False):
         download = list(cleaned_dict.values())
-        search = st.text_input("Search bar to check for converted genes", help="Search the new gene symbols")
+        search = st.text_input("Search bar to check for converted genes (e.g. SEPTIN1;DELEC1)", help="Search the new gene symbols (delimiter ;")
         genes = search.replace(";", ",").replace(" ", ",").split(',')
         gene_final = [x.upper() for x in genes if x != ""]
         for k,v in cleaned_dict.items():
