@@ -25,7 +25,6 @@ If no datasets are uploaded, a pre-loaded dataframe will be loaded to demonstrat
 ''')
 
 if st.sidebar.checkbox("Read the Docs", value=False):
-    st.markdown("# Date-to-gene-converter")
 #            st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
     st.markdown('''
     The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC). The running instance of the app is deployed at: "https://share.streamlit.io/kuanrongchan/date-to-gene-converter/main/date_gene_tool.py"
