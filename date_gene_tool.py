@@ -17,9 +17,9 @@ from streamlit_tags import st_tags, st_tags_sidebar
 st.title("Gene Updater: A Streamlit web tool that autocorrects and updates for Excel misidentified gene names")
 st.markdown('''
 When gene expression datasets are opened with Excel under default settings, a recurring problem where gene names are converted to dates occurs. 
-With this web tool, the dates will be converted back to their new HGNC symbols. These new gene names are more silient to gene-to-date conversions in Excel.
+With this web tool, the dates will be converted back to their new HGNC symbols. These new gene names are more resilient to gene-to-date conversions in Excel.
 
-If nothing is uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions
+If no datasets are uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions
 ''')
 
 ################################################# File Uploader ########################################################
