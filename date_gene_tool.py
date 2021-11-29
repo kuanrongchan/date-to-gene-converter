@@ -353,7 +353,7 @@ for k,df in df_dict.items():
         nodates(df) # converts old to new (eg. DEC1 -> DELEC1)
 
     elif len(date_search) == 0 and len(old_search) == 0:
-        numdate = [g for g in df.index.tolist() if re.search("\d*[-/]?\W", g)]
+        numdate = [g for g in df.index.tolist() if re.search("\W\d*[-/]?\W", g)]
         if len(numdate) != 0:
             isnums += 1
             if isnums == 1:
