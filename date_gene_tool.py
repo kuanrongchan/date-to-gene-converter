@@ -20,7 +20,6 @@ st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-
 st.markdown('''
 When gene expression datasets are opened with Excel under default settings, a recurring problem where gene names are converted to dates occurs. 
 With this web tool, the dates will be converted back to their new HGNC gene symbols. These new gene names are more resilient to gene-to-date conversions in Excel.
-
 If no datasets are uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions.
 ''')
 
@@ -29,14 +28,14 @@ if st.sidebar.checkbox("Read the Docs", value=False):
 #            st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
     st.markdown('''
     The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC).
-
+    
     ## Instructions for using web tool
     Users can upload a single or multiple .csv or .xlsx files. Ensure that the first column contains the gene names. A checkbox is provided for users to inspect their uploaded data. If no data is uploaded, a demo dataset consisting of a restricted list of genes are pre-loaded. Users may use the pre-loaded demo dataset to explore the features and functionalities of the web tool.
-
+    
     If the first column contains the old gene names, these genes will be updated to the new gene names using the webtool. If the first column contains dates, they will be converted to the updated gene names, with the exception of Mar-01 and Mar-02 as these terms can be mapped to more than one gene.
-
+    
     When there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st and Mar-01_2nd. Users will have to manually assign the corresponding gene names to the values. If gene description is provided in the dataset, users will just need to match the gene name to the gene description. Otherwise, users will have to check their raw dataset to ascertain what the Mar-01_1st and Mar-01_2nd mean. The same process goes for Mar-02 values as well.
-
+    
     ## Checking converted dataframes
     Users can key in the genes of interest in the search bar to inspect if the gene expression data has indeed been updated with the new gene names.
     ''')
@@ -91,6 +90,7 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
+@st.cache
 def get_table_download_link(df): # keeping just in case download button fails
     """Generates a link allowing the data in a given panda dataframe to be downloaded
     in:  dataframe
@@ -135,12 +135,14 @@ corrected = {"Dec-01_1st": "DELEC1", "01-Dec_1st":"DELEC1", "Mar-03_1st": "MARCH
              "Sep-10_1st": "SEPTIN10", "10-Sep_1st":"SEPTIN10", "Sep-11_1st": "SEPTIN11", "11-Sep_1st":"SEPTIN11",
              "Sep-12_1st": "SEPTIN12", "12-Sep_1st":"SEPTIN12", "Sep-14_1st": "SEPTIN14", "14-Sep_1st":"SEPTIN14"
                  }
-
+misidentified = None
 ############################### Path after initial regex ############################################################
 
 ################ Contains dates and March-01/March-02 and have to be resolved ####################
-def march_resolver(df):
-    find = [g for g in df.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g)]
+def march_resolver(dfs):
+    find = [g for g in dfs.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g)]
+    global misidentified
+    misidentified = ";".join(find)
     formatted = {}
     for d in find:
         zero_pad = re.search("[0-9]{2}", d)
@@ -230,8 +232,8 @@ def march_resolver(df):
     found.reset_index(drop=True, inplace=True)  # remove the gene index with the dates
     found.rename(columns={"Gene": "gene"}, inplace=True)  # rename the incoming column to be used as index
     found.set_index('gene', inplace=True)  # set the index of these date genes using corrected names
-    df = df.drop(index=find)  # drop the date genes from the main df
-    df2 = pd.concat([df, found], axis=0)  # join these genes back to the main df
+    dfs = dfs.drop(index=find)  # drop the date genes from the main df
+    df2 = pd.concat([dfs, found], axis=0)  # join these genes back to the main df
     df2.sort_index(axis=0, ascending=True, inplace=True)  # sort alphabetically
     df2.reset_index(drop=False, inplace=True)
     df2.rename(columns={'index': index_name}, inplace=True)
@@ -241,6 +243,8 @@ def march_resolver(df):
 
 ############ Contains dates but no march-01/march-02 and thus nothing to resolve ##############
 def date_resolver(df, date_search):
+    global misidentified
+    misidentified = ";".join(date_search)
     formatted = {}
     for d in date_search:
         zero_pad = re.search("[0-9]{2}", d)
@@ -254,6 +258,7 @@ def date_resolver(df, date_search):
         else:
             a = f"{og_month[0]}-{og_num[0]}"
             formatted[d] = a
+
     found = df.loc[date_search]
     found.rename(index=formatted, inplace=True)
     found = found.drop_duplicates()  # ensures that there aren't duplicate rows (not just duplicate row names)
@@ -270,25 +275,45 @@ def date_resolver(df, date_search):
 
 ############################## Dates are only numbers ##########################################
 def numeric_date(k,df,numdate):
-    num_exp = st.expander(f"Expand for {k}'s date formats")
+    num_exp = st.expander(f"Expand if {k}'s date format is numerical (eg. yyyy/mm/dd)")
     date_fmt = num_exp.radio(f"Select the format that {k} dataframe is in",
                   options=["yyyy-dd-mm", "yyyy-mm-dd", "dd-mm-yyyy", "mm-dd-yyyy"])
-    found = df.loc[numdate]
+    info_stored = num_exp.radio(f"Select how {k}'s dates should be read to derive gene names (Hover '?' for help)",
+                                options=['month-year', 'month-day'],
+                                help='For example, 2001-03-09 (yyyy-mm-dd) may either be Mar-01 (MARCHF1) or Mar-09 (MARCHF9).',
+                                index=1)
+    num_exp.info("If you're unsure about the above option, check the converted dataframe and select 'month-year' "
+                 "if there are any <NA> symbols found at the bottom of the dataframe.")
+    if info_stored == 'month-year':
+        strfmt = '%b-%y'
+    else:
+        strfmt = '%b-%d'
+    a = []
+    df.reset_index(drop=False, inplace=True)
+    index_nm = df.columns.tolist()[0]
+    for n in numdate:
+        indices = df.index[df[index_nm] == n].tolist()
+        if indices not in a:
+            a.append(indices)
+    flattened = [item for sublist in a for item in sublist]
+    found = df.iloc[flattened,:]
+    found.set_index(index_nm, inplace=True)
     num_exp.write(f"**{k} dataframe**")
     num_exp.dataframe(found)
-    tempfmt = {}
 
     if date_fmt == "yyyy-dd-mm":
-        extracted = [(dateparser.parse(n, date_formats=["%Y-%d-%m"])).strftime("%d-%b") for n in numdate]
+        extracted = {n:(dateparser.parse(n, date_formats=["%Y-%d-%m"])).strftime(strfmt) for n in numdate}
     elif date_fmt == "yyyy-mm-dd":
-        extracted = [(dateparser.parse(n, date_formats=["%Y-%m-%d"])).strftime("%d-%b") for n in numdate]
+        extracted = {n:(dateparser.parse(n, date_formats=["%Y-%m-%d"])).strftime(strfmt) for n in numdate}
     elif date_fmt == "dd-mm-yyyy":
-        extracted = [(dateparser.parse(n, date_formats=["%d-%m-%Y"])).strftime("%d-%b") for n in numdate]
+        extracted = {n:(dateparser.parse(n, date_formats=["%d-%m-%Y"])).strftime(strfmt) for n in numdate}
     elif date_fmt == "mm-dd-yyyy":
-        extracted = [(dateparser.parse(n, date_formats=["%m-%d-%Y"])).strftime("%d-%b") for n in numdate]
-    for i, e in zip(found.index.tolist(), extracted):
-        tempfmt[i] = e
-    df.rename(index=tempfmt,inplace=True)
+        extracted = {n:(dateparser.parse(n, date_formats=["%m-%d-%Y"])).strftime(strfmt) for n in numdate}
+
+    global misidentified
+    misidentified = ";".join(extracted.keys())
+    df.set_index(index_nm, inplace=True)
+    df.rename(index=extracted, inplace=True)
     return df
 
 ############################ Just old symbols and no date issues ###############################
@@ -299,6 +324,8 @@ def nodates(df):
         value = reference_symbols.iloc[i, 1]
         corrected[key] = value
 
+    global misidentified
+    misidentified = ";".join(corrected.keys())
     df.rename(index=corrected, inplace=True)
     cleaned_dict[k] = df
     return
@@ -308,7 +335,10 @@ def completed():
     st.subheader("Converted Dataframes")
     with st.expander("Check dataframe and download here", expanded=False):
         download = list(cleaned_dict.values())
-        search = st.text_input("Search bar to check for converted genes (e.g. SEPTIN1;DELEC1)", help="Search the new gene symbols (delimiter ;)")
+        st.info("🔔 Reminder: check the bottom of the dataframe for potential <NA> values.")
+        search = st.text_input("Search bar to check for converted genes (e.g. SEPTIN1;DELEC1)",
+                               help="Search the new gene symbols (delimiter ;)")
+        st.markdown(f"Copy and paste these to search bar to check that these symbols are no longer in the dataframes: \n - {misidentified}")
         genes = search.replace(";", ",").replace(" ", ",").split(',')
         gene_final = [x.upper() for x in genes if x != ""]
         for k,v in cleaned_dict.items():
@@ -360,7 +390,7 @@ for k,df in df_dict.items():
                 st.subheader("Resolve Date Format")
             renamed = numeric_date(k,df,numdate)
             march_search = [m for m in renamed.index.tolist() if re.search("^Mar-0?1|0?1-Mar|Mar-0?2|0?2-Mar", m)]  # only march genes
-            generic_date = [g for g in renamed.index.tolist() if re.search("(Mar|Apr|Sept?|Oct|Dec)", g)]
+            generic_date = [g for g in renamed.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g)]
             if len(march_search) != 0:
                 ismar += 1
                 if ismar == 1:
@@ -377,8 +407,3 @@ for k,df in df_dict.items():
 
 # No matter what the flow is, the program returns a completed section
 completed()
-
-
-
-
-
