@@ -285,7 +285,7 @@ def numeric_date(k,df,numdate):
     elif date_fmt == "dd-mm-yyyy":
         extracted = [(dateparser.parse(n, date_formats=["%d-%m-%Y"])).strftime("%d-%b") for n in numdate]
     elif date_fmt == "mm-dd-yyyy":
-        extracted = [(dateparser.parse(n, date_formats=["%d-%m-%Y"])).strftime("%d-%b") for n in numdate]
+        extracted = [(dateparser.parse(n, date_formats=["%m-%d-%Y"])).strftime("%d-%b") for n in numdate]
     for i, e in zip(found.index.tolist(), extracted):
         tempfmt[i] = e
     df.rename(index=tempfmt,inplace=True)
