@@ -338,7 +338,7 @@ def completed():
         st.info("🔔 Reminder: check the bottom of the dataframe for potential <NA> values.")
         search = st.text_input("Search bar to check for converted genes (e.g. SEPTIN1;DELEC1)",
                                help="Search the new gene symbols (delimiter ;)")
-        st.markdown(f"Copy and paste these to search bar to check that these symbols are no longer in the dataframes: \n - {misidentified}")
+#         st.markdown(f"Copy and paste these to search bar to check that these symbols are no longer in the dataframes: \n - {misidentified}")
         genes = search.replace(";", ",").replace(" ", ",").split(',')
         gene_final = [x.upper() for x in genes if x != ""]
         for k,v in cleaned_dict.items():
