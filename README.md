@@ -1,4 +1,4 @@
-# Date-to-gene-converter
+# Gene Updater
 
 ![schematic_Date converter](https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg)
 
