@@ -1,5 +1,5 @@
 numpy==1.19.5
-streamlit==1.2.0
+streamlit==1.8.1
 streamlit_tags==1.2.8
 pandas==1.2.5
 openpyxl==3.0.9
