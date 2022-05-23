@@ -7,6 +7,7 @@ import re
 import inflect
 import base64
 from io import BytesIO
+import zipfile
 import dateparser
 from datetime import datetime
 
@@ -63,8 +64,8 @@ if len(df_query) != 0:
                 data = x[i]
                 df_dict[i] = data
 else:
-#     x = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/demo.csv",
-#                     index_col = 0) # local
+    # x = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/demo.csv",
+    #                 index_col = 0) # local
     x = pd.read_csv("demo.csv", index_col = 0) # github
     testname = "Demo"
     df_dict[testname] = x
@@ -78,28 +79,39 @@ if st.sidebar.checkbox("Show original datasets"):
         st.dataframe(v)
 
 ################################################ for df download #######################################################
-# def convert_df(df):
-#         return df.to_csv().encode('utf-8')
+def zip_file(dfs, keys):
+    with zipfile.ZipFile("cleanedfiles.zip", 'w') as compress:
+        for df, k in zip(dfs, keys):
+            file = df.to_csv().encode('utf-8')
+            compress.writestr(f"cleaned_{k}.csv", file)
 
-def to_excel(df):
-    output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    for d, i in zip(df, range(len(df))):
-        d.to_excel(writer, sheet_name=f'Sheet {i+1}')
-    writer.save()
-    processed_data = output.getvalue()
-    return processed_data
+    with open("cleanedfiles.zip", "rb") as fp:
+          btn = st.download_button(
+              label="Download ZIP",
+              data=fp,
+              file_name="cleanedfiles.zip",
+              mime="application/octet-stream"
+              )
 
-@st.cache
-def get_table_download_link(df): # keeping just in case download button fails
-    """Generates a link allowing the data in a given panda dataframe to be downloaded
-    in:  dataframe
-    out: href string
-    """
-    val = to_excel(df)
-    b64 = base64.b64encode(val)
-    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="cleaned_files.xlsx">' \
-           f'📥 Download cleaned files as Excel 📥</a>' # decode b'abc' => abc
+# def to_excel(df):
+#     output = BytesIO()
+#     writer = pd.ExcelWriter(output, engine='xlsxwriter')
+#     for d, i in zip(df, range(len(df))):
+#         d.to_excel(writer, sheet_name=f'Sheet {i+1}')
+#     writer.save()
+#     processed_data = output.getvalue()
+#     return processed_data
+
+# @st.cache
+# def get_table_download_link(df): # keeping just in case download button fails
+#     """Generates a link allowing the data in a given panda dataframe to be downloaded
+#     in:  dataframe
+#     out: href string
+#     """
+#     val = to_excel(df)
+#     b64 = base64.b64encode(val)
+#     return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="cleaned_files.xlsx">' \
+#            f'📥 Download cleaned files as Excel 📥</a>' # decode b'abc' => abc
 
 ########################################### HGNC Reference Table ####################################################
 @st.cache
@@ -353,7 +365,8 @@ def completed():
                 except KeyError:
                     st.error(f"🚨 Gene not found for {k} dataframe 🚨")
 
-        st.markdown(get_table_download_link(download), unsafe_allow_html=True)
+        downloadzip = zip_file(download, cleaned_dict.keys())
+        # st.markdown(get_table_download_link(download), unsafe_allow_html=True)
     return
 
 
