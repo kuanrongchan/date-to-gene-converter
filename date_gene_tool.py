@@ -76,7 +76,7 @@ for df in df_dict.values():
 if st.sidebar.checkbox("Show original datasets"):
     for k,v in df_dict.items():
         st.markdown(f"##### {k} dataframe")
-        st.dataframe(v)
+        st.dataframe(v.reset_index())
 
 ################################################ for df download #######################################################
 def zip_file(dfs, keys):
