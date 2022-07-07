@@ -18,5 +18,6 @@ Users can key in the genes of interest (e.g. MARCHF1) to inspect if the gene exp
 Once the user has downloaded this repository, requirements should be installed and the script run with the following codes in the command line:
 ```
 pip install -r requirements.txt
+cd path/to/folder
 streamlit run date_gene_tool.py
 ```
