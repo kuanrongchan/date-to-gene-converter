@@ -15,6 +15,7 @@ When there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st a
 Users can key in the genes of interest (e.g. MARCHF1) to inspect if the gene expression data has indeed been updated with the new gene names. 
 
 # Running the Gene Updater tool locally
+
 Please execute the following steps to run the Gene Updater tool locally
 
 ## Technical requirements
@@ -47,10 +48,38 @@ This will generate a local file named that is named as date_gene_tool.py.
 After locating the date_gene_tool.py file, open the file in text editor (e.g. Sublime or Visual Studio Code)
 When you open the file, copy and paste the codes that is located at: "https://github.com/kuanrongchan/date-to-gene-converter/blob/main/date_gene_tool.py"
 
+## Installing packages for date_gene_tool
+Install the following packages locally by typing the following commands in terminal:
+```
+pip install pandas
+pip install numpy
+pip install regex
+pip install inflect
+pip install pybase64
+pip install zip-files
+pip install date parser
+pip install DateTime
+pip install streamlit-tags
+```
 
-Once the user has downloaded this repository, requirements should be installed and the script run with the following codes in the command line.
+## Running Gene Updater tool locally
+You can run the program locally by typing in terminal:
+```
+streamlit run date_gene_tool.py
+```
+
+This should open a new tab with the Gene Updater app appearing in your default browser
+
+
+## Summary
+In summary, to run the file locally, please download this repoistory, install the requirements and run the script with the following codes in the command line
+
 ```
 cd path/to/folder
 pip install -r requirements.txt
 streamlit run date_gene_tool.py
 ```
+
+# Credits
+This app is developed by Clara Koh, Justin Ooi and Kuan Rong Chan from Duke-NUS Medical School, Singapore. For more details on what we do, please visit our website at kuanrongchan.com
+
