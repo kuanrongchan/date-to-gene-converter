@@ -31,7 +31,6 @@ if st.sidebar.checkbox("Read the Docs", value=False):
     #            st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
 
         st.markdown('''
-        <div style="text-align":justify>
         The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC).
         
         ## Instructions for using web tool
@@ -43,12 +42,15 @@ if st.sidebar.checkbox("Read the Docs", value=False):
         If the first column contains the old gene names, these genes will be updated to the new gene names using the webtool. If the first column contains dates, they will be converted to the updated gene names, with the exception of Mar-01 and Mar-02 as these terms can be mapped to more than one gene.
         
         ### Resolving Duplicate Mar-01 or Mar-02 Values
-        If there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st and Mar-01_2nd and an expander will appear for users to manually assign the corresponding gene names to the values. If there are no duplicate Mar-01 values, this expander will not be shown. If gene description is provided in the dataset, users will just need to match the gene name to the gene description. Otherwise, users will have to check their raw dataset to ascertain what the Mar-01_1st and Mar-01_2nd mean. The same process goes for Mar-02 values as well.
+        If there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st and Mar-01_2nd and an expander will appear for users to manually assign the corresponding gene names to the values. 
+        
+        If there are no duplicate Mar-01 values, this expander will not be shown. 
+        
+        If a gene description is provided in the dataset, users will just need to match the gene name to the gene description. Otherwise, users will have to check their raw dataset to ascertain what the Mar-01_1st and Mar-01_2nd mean. The same process goes for Mar-02 values as well.
         
         ### Checking converted dataframes
-        Users can click on the dataframe and use the Cmd+F or Ctrl+F keys to inspect if the gene expression data has indeed been updated with the new gene names.
-        </div>
-        ''', unsafe_allow_html=True)
+        Users can click on the dataframe and use the Cmd+F or Ctrl+F keys to inspect if the gene expression data has indeed been updated with the new gene names.~
+        ''')
 
 ################################################# File Uploader ########################################################
 df_query = st.sidebar.file_uploader(
@@ -174,7 +176,7 @@ misidentified = None
 
 ################ Contains dates and March-01/March-02 and have to be resolved ####################
 def march_resolver(dfs):
-    find = [g for g in dfs.index.tolist() if re.search("^(?!MARVELD2)^MAR|^APR|^SEPT?|^OCT|^DEC", g, flags=re.I)]
+    find = [g for g in dfs.index.tolist() if re.search("^MAR-|^APR-|^SEPT?-|^OCT-|^DEC-", g, flags=re.I)]
     global misidentified
     misidentified = ";".join(find)
     formatted = {}
@@ -284,9 +286,7 @@ def date_resolver(df, date_search):
         else:
             a = f"{og_month[0]}-{og_num[0]}"
             formatted[d] = a
-
     found = df.loc[date_search]
-    st.write(found)
     found.rename(index=formatted, inplace=True)
     found = found.drop_duplicates()  # ensures that there aren't duplicate rows (not just duplicate row names)
     found.reset_index(drop=False, inplace=True)
@@ -382,11 +382,11 @@ def completed():
 ismar, isnums = 0, 0
 
 for k,df in df_dict.items():
-    date_search = [g for g in df.index.tolist() if re.search("^(?!MARVELD2)^Mar|^Apr|^Sept?|^Oct|^Dec", g, flags=re.I)] # dates
+    date_search = [g for g in df.index.tolist() if re.search("^Mar-|^Apr-|^Sept?-|^Oct-|^Dec-", g, flags=re.I)] # dates
     old_symbols = list(reference_symbols['Previous Symbol'])
     old_search = list(set(df.index.tolist()).intersection(set(old_symbols))) # easy way to find old symbols in df index
     if len(date_search) != 0:
-        march_search = [m for m in date_search if re.search("^(?!MARVELD2)^Mar-0?1|^0?1-Mar|^Mar-0?2|^0?2-Mar", m, flags=re.I)] # only march genes
+        march_search = [m for m in date_search if re.search("^Mar-0?1|^0?1-Mar|^Mar-0?2|^0?2-Mar", m, flags=re.I)] # only march genes
         if len(march_search) != 0:
             ismar += 1
             if ismar == 1:
@@ -405,8 +405,8 @@ for k,df in df_dict.items():
             if isnums == 1:
                 st.subheader("Resolve Date Format")
             renamed = numeric_date(k,df,numdate)
-            march_search = [m for m in renamed.index.tolist() if re.search("^Mar-0?1|0?1-Mar|Mar-0?2|0?2-Mar", m, flags=re.I)]  # only march genes
-            generic_date = [g for g in renamed.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g, flags=re.I)]
+            march_search = [m for m in renamed.index.tolist() if re.search("^Mar-0?1|^0?1-Mar|^Mar-0?2|^0?2-Mar", m, flags=re.I)]  # only march genes
+            generic_date = [g for g in renamed.index.tolist() if re.search("^Mar-|^Apr-|^Sept?-|^Oct-|^Dec-", g, flags=re.I)]
             if len(march_search) != 0:
                 ismar += 1
                 if ismar == 1:
