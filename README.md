@@ -16,7 +16,7 @@ Users can key in the genes of interest (e.g. MARCHF1) to inspect if the gene exp
 
 # Running the Gene Updater tool locally
 
-Please execute the following steps to run the Gene Updater tool locally
+Please execute the following steps to run the Gene Updater tool locally:
 
 ## Technical requirements
 Please install the following:
