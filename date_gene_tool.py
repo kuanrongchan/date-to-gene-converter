@@ -24,22 +24,31 @@ With this web tool, the dates will be converted back to their new HGNC gene symb
 If no datasets are uploaded, a pre-loaded dataframe will be loaded to demonstrate this converter's functions.
 ''')
 
+
 if st.sidebar.checkbox("Read the Docs", value=False):
-    st.markdown("## Documentation")
-#            st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
-    st.markdown('''
-    The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC).
-    
-    ## Instructions for using web tool
-    Users can upload a single or multiple .csv or .xlsx files. Ensure that the first column contains the gene names. A checkbox is provided for users to inspect their uploaded data. If no data is uploaded, a demo dataset consisting of a restricted list of genes are pre-loaded. Users may use the pre-loaded demo dataset to explore the features and functionalities of the web tool.
-    
-    If the first column contains the old gene names, these genes will be updated to the new gene names using the webtool. If the first column contains dates, they will be converted to the updated gene names, with the exception of Mar-01 and Mar-02 as these terms can be mapped to more than one gene.
-    
-    When there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st and Mar-01_2nd. Users will have to manually assign the corresponding gene names to the values. If gene description is provided in the dataset, users will just need to match the gene name to the gene description. Otherwise, users will have to check their raw dataset to ascertain what the Mar-01_1st and Mar-01_2nd mean. The same process goes for Mar-02 values as well.
-    
-    ## Checking converted dataframes
-    Users can key in the genes of interest in the search bar to inspect if the gene expression data has indeed been updated with the new gene names.
-    ''')
+    with st.expander('Expand for documentation', expanded=True):
+        st.markdown("## Documentation")
+    #            st.image("https://user-images.githubusercontent.com/91276553/143521451-6facb875-2af1-4c5a-b5ad-67c253d3a0c8.jpg", width=None)
+
+        st.markdown('''
+        <div style="text-align":justify>
+        The automatic conversion of genes to dates in Excel can be problematic, as the converted dates are not recognised in pathway databases. This web tool thus serves to convert the old gene names or dates back into the updated gene names as recommended by the HUGO Gene Nomenclature Committee (HGNC).
+        
+        ## Instructions for using web tool
+
+        ### Data Upload
+        Users can upload a single or multiple .csv or .xlsx files. Ensure that the first column contains the gene names. A checkbox is provided for users to inspect their uploaded data. If no data is uploaded, a demo dataset consisting of a restricted list of genes are pre-loaded. Users may use the pre-loaded demo dataset to explore the features and functionalities of the web tool.
+        
+        ### Updating Outdated Date-related Gene Names
+        If the first column contains the old gene names, these genes will be updated to the new gene names using the webtool. If the first column contains dates, they will be converted to the updated gene names, with the exception of Mar-01 and Mar-02 as these terms can be mapped to more than one gene.
+        
+        ### Resolving Duplicate Mar-01 or Mar-02 Values
+        If there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st and Mar-01_2nd and an expander will appear for users to manually assign the corresponding gene names to the values. If there are no duplicate Mar-01 values, this expander will not be shown. If gene description is provided in the dataset, users will just need to match the gene name to the gene description. Otherwise, users will have to check their raw dataset to ascertain what the Mar-01_1st and Mar-01_2nd mean. The same process goes for Mar-02 values as well.
+        
+        ### Checking converted dataframes
+        Users can click on the dataframe and use the Cmd+F or Ctrl+F keys to inspect if the gene expression data has indeed been updated with the new gene names.
+        </div>
+        ''', unsafe_allow_html=True)
 
 ################################################# File Uploader ########################################################
 df_query = st.sidebar.file_uploader(
@@ -64,14 +73,13 @@ if len(df_query) != 0:
                 data = x[i]
                 df_dict[i] = data
 else:
-    # x = pd.read_csv("/Users/clara/Dropbox/Streamlit_app/Date Gene Converter/demo.csv",
-    #                 index_col = 0) # local
     x = pd.read_csv("demo.csv", index_col = 0) # github
     testname = "Demo"
     df_dict[testname] = x
 
 for df in df_dict.values():
-    df.index = df.index.astype(str) # expand to format actual dates from excel sheets as text
+    df.index = df.index.astype(str, copy=False) # expand to format actual dates from excel sheets as text
+    df.index = df.index.str.upper()
 
 if st.sidebar.checkbox("Show original datasets"):
     for k,v in df_dict.items():
@@ -134,7 +142,20 @@ if st.sidebar.checkbox("HGNC symbol reference", value=False):
 p = inflect.engine()
 cleaned_dict = {}
 
-corrected = {"Dec-01_1st": "DELEC1", "01-Dec_1st":"DELEC1", "Mar-03_1st": "MARCHF3", "03-Mar_1st":"MARCHF3",
+corrected = {"DEC-01_1st": "DELEC1", "01-DEC_1st":"DELEC1", "MAR-03_1st": "MARCHF3", "03-MAR_1st":"MARCHF3",
+             "MAR-04_1st": "MARCHF4", "04-MAR_1st":"MARCHF4", "MAR-05_1st": "MARCHF5", "05-MAR_1st":"MARCHF5",
+             "MAR-06_1st": "MARCHF6", "06-MAR_1st":"MARCHF6", "MAR-07_1st": "MARCHF7", "07-MAR_1st":"MARCHF7",
+             "MAR-08_1st": "MARCHF8", "08-MAR_1st":"MARCHF8", "MAR-09_1st": "MARCHF9", "09-MAR_1st":"MARCHF9",
+             "MAR-10_1st": "MARCHF10", "10-MAR_1st":"MARCHF10", "MAR-11_1st": "MARCHF11", "11-MAR_1st":"MARCHF11",
+             "SEP-15_1st": "SELENOF", "15_SEP_1st":"SELENOF", "SEP-01_1st": "SEPTIN1", "01-SEP_1st":"SEPTIN1",
+             "SEP-02_1st": "SEPTIN2", "02-SEP_1st":"SEPTIN2", "SEP-03_1st": "SEPTIN3", "03-SEP_1st":"SEPTIN3",
+             "SEP-04_1st": "SEPTIN4", "04-SEP_1st":"SEPTIN4", "SEP-05_1st": "SEPTIN5", "05-SEP_1st":"SEPTIN5",
+             "SEP-06_1st": "SEPTIN6", "06-SEP_1st":"SEPTIN6", "SEP-07_1st": "SEPTIN7", "07-SEP_1st":"SEPTIN7",
+             "SEP-08_1st": "SEPTIN8", "08-SEP_1st":"SEPTIN8", "SEP-09_1st": "SEPTIN9", "09-SEP_1st":"SEPTIN9",
+             "SEP-10_1st": "SEPTIN10", "10-SEP_1st":"SEPTIN10", "SEP-11_1st": "SEPTIN11", "11-SEP_1st":"SEPTIN11",
+             "SEP-12_1st": "SEPTIN12", "12-SEP_1st":"SEPTIN12", "SEP-14_1st": "SEPTIN14", "14-SEP_1st":"SEPTIN14",
+
+             "Dec-01_1st": "DELEC1", "01-Dec_1st":"DELEC1", "Mar-03_1st": "MARCHF3", "03-Mar_1st":"MARCHF3",
              "Mar-04_1st": "MARCHF4", "04-Mar_1st":"MARCHF4", "Mar-05_1st": "MARCHF5", "05-Mar_1st":"MARCHF5",
              "Mar-06_1st": "MARCHF6", "06-Mar_1st":"MARCHF6", "Mar-07_1st": "MARCHF7", "07-Mar_1st":"MARCHF7",
              "Mar-08_1st": "MARCHF8", "08-Mar_1st":"MARCHF8", "Mar-09_1st": "MARCHF9", "09-Mar_1st":"MARCHF9",
@@ -147,12 +168,13 @@ corrected = {"Dec-01_1st": "DELEC1", "01-Dec_1st":"DELEC1", "Mar-03_1st": "MARCH
              "Sep-10_1st": "SEPTIN10", "10-Sep_1st":"SEPTIN10", "Sep-11_1st": "SEPTIN11", "11-Sep_1st":"SEPTIN11",
              "Sep-12_1st": "SEPTIN12", "12-Sep_1st":"SEPTIN12", "Sep-14_1st": "SEPTIN14", "14-Sep_1st":"SEPTIN14"
                  }
+
 misidentified = None
 ############################### Path after initial regex ############################################################
 
 ################ Contains dates and March-01/March-02 and have to be resolved ####################
 def march_resolver(dfs):
-    find = [g for g in dfs.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g)]
+    find = [g for g in dfs.index.tolist() if re.search("^(?!MARVELD2)^MAR|^APR|^SEPT?|^OCT|^DEC", g, flags=re.I)]
     global misidentified
     misidentified = ";".join(find)
     formatted = {}
@@ -177,7 +199,7 @@ def march_resolver(dfs):
     index_name = found.columns.tolist()[0]
     found[index_name] += found.groupby(index_name).cumcount().add(1).map(p.ordinal).radd('_')
     found.set_index(index_name, inplace=True)
-    mar1 = [f for f in found.index.tolist() if re.search("Mar-0?1_1st|0?1-Mar_1st|Mar-0?1_2nd|Mar-0?1_2nd", f)]
+    mar1 = [f for f in found.index.tolist() if re.search("Mar-0?1_1st|0?1-Mar_1st|Mar-0?1_2nd|Mar-0?1_2nd", f, flags=re.I)]
     if len(mar1) !=0:
         mar1_df = found.loc[mar1]
 
@@ -198,12 +220,10 @@ def march_resolver(dfs):
             first_mar01 = "MARCHF1"
             second_mar01 = "MTARC1"
 
-        corrected["Mar-01_1st"] = first_mar01
-        corrected["01-Mar_1st"] = first_mar01
-        corrected["Mar-01_2nd"] = second_mar01
-        corrected["01-Mar_2nd"] = second_mar01
+        corrected["MAR-01_1st"], corrected['Mar-01_1st'], corrected["01-MAR_1st"], corrected["01-Mar_1st"] = first_mar01, first_mar01, first_mar01, first_mar01
+        corrected["MAR-01_2nd"], corrected["Mar-01_2nd"], corrected["01-MAR_2nd"], corrected["01-Mar_2nd"] = second_mar01, second_mar01, second_mar01, second_mar01
 
-    mar2 = [f for f in found.index.tolist() if re.search("Mar-0?2_1st|0?2-Mar_1st|Mar-0?2_2nd|02-Mar_2nd", f)]
+    mar2 = [f for f in found.index.tolist() if re.search("Mar-0?2_1st|0?2-Mar_1st|Mar-0?2_2nd|02-Mar_2nd", f, flags=re.I)]
     if len(mar2) !=0:
         mar2_df = found.loc[mar2]
 
@@ -225,20 +245,14 @@ def march_resolver(dfs):
             first_mar02 = "MARCHF2"
             second_mar02 = "MTARC2"
 
-        corrected["Mar-01_1st"] = first_mar01
-        corrected["01-Mar_1st"] = first_mar01
-        corrected["Mar-01_2nd"] = second_mar01
-        corrected["01-Mar_2nd"] = second_mar01
-        corrected["Mar-02_1st"] = first_mar02
-        corrected["02-Mar_1st"] = first_mar02
-        corrected["Mar-02_2nd"] = second_mar02
-        corrected["02-Mar_2nd"] = second_mar02
+        corrected["MAR-02_1st"], corrected["Mar-02_1st"], corrected["02-MAR_1st"], corrected["02-Mar_1st"]  = first_mar02, first_mar02, first_mar02, first_mar02
+        corrected["MAR-02_2nd"], corrected["Mar-02_2nd"], corrected["02-MAR_2nd"], corrected["02-Mar_2nd"] = second_mar02, second_mar02, second_mar02, second_mar02
 
-    else:
-        corrected["Mar-01_1st"] = first_mar01
-        corrected["01-Mar_1st"] = first_mar01
-        corrected["Mar-01_2nd"] = second_mar01
-        corrected["01-Mar_2nd"] = second_mar01
+    # else:
+    #     corrected["MAR-01_1st"], corrected['Mar-01_1st'], corrected["01-MAR_1st"], corrected["01-Mar_1st"] = first_mar01, first_mar01, first_mar01, first_mar01
+    #     corrected["MAR-01_2nd"], corrected["Mar-01_2nd"], corrected["01-MAR_2nd"], corrected["01-Mar_2nd"] = second_mar01, second_mar01, second_mar01, second_mar01
+    #     corrected["MAR-02_1st"], corrected["Mar-02_1st"], corrected["02-MAR_1st"], corrected["02-Mar_1st"]  = first_mar02, first_mar02, first_mar02, first_mar02
+    #     corrected["MAR-02_2nd"], corrected["Mar-02_2nd"], corrected["02-MAR_2nd"], corrected["02-Mar_2nd"] = second_mar02, second_mar02, second_mar02, second_mar02
 
     found["Gene"] = pd.Series(corrected)  # in order to rename just change this to found.rename(corrected)
     found.reset_index(drop=True, inplace=True)  # remove the gene index with the dates
@@ -272,6 +286,7 @@ def date_resolver(df, date_search):
             formatted[d] = a
 
     found = df.loc[date_search]
+    st.write(found)
     found.rename(index=formatted, inplace=True)
     found = found.drop_duplicates()  # ensures that there aren't duplicate rows (not just duplicate row names)
     found.reset_index(drop=False, inplace=True)
@@ -295,7 +310,7 @@ def numeric_date(k,df,numdate):
                                 help='For example, 2001-03-09 (yyyy-mm-dd) may either be Mar-01 (MARCHF1) or Mar-09 (MARCHF9).',
                                 index=1)
     num_exp.info("If you're unsure about the above option, check the converted dataframe and select 'month-year.' "
-                 "We recommend you to check the converted dataframe to ensure that the dates are converted correctly. If unsuccessful, <NA> symbols will populate at the bottom of the dataframe.")
+                 "We recommend you to check the converted dataframe to ensure that the dates are converted correctly. If unsuccessful, <NA> symbols will populate at the bottom of the converted dataframe.")
     if info_stored == 'month-year':
         strfmt = '%b-%y'
     else:
@@ -347,26 +362,14 @@ def completed():
     st.subheader("Converted Dataframes")
     with st.expander("Check dataframe and download here", expanded=False):
         download = list(cleaned_dict.values())
-        st.info("🔔 Reminder: check the bottom of the dataframe for potential <NA> values.")
-        search = st.text_input("Search bar to check for converted genes (e.g. SEPTIN1;DELEC1)",
-                               help="Search the new gene symbols (delimiter ;)")
-#         st.markdown(f"Copy and paste these to search bar to check that these symbols are no longer in the dataframes: \n - {misidentified}")
-        genes = search.replace(";", ",").replace(" ", ",").split(',')
-        gene_final = [x.upper() for x in genes if x != ""]
+        st.info("🔔 Reminder: check the bottom of the dataframe for potential <NA> values due to date formats or duplicate genes.")
+        st.info("Click anywhere in the dataframe and Cmd+F or Ctrl+F to check for specific genes.")
         for k,v in cleaned_dict.items():
-            if len(gene_final) == 0:
-                st.markdown(f"##### {k} dataframe")
-                st.dataframe(v)
-            else:
-                try:
-                    query = v.loc[gene_final]
-                    st.markdown(f"##### {k} dataframe")
-                    st.dataframe(query)
-                except KeyError:
-                    st.error(f"🚨 Gene not found for {k} dataframe 🚨")
+            st.markdown(f"##### {k} dataframe")
+            st.dataframe(v)
 
         downloadzip = zip_file(download, cleaned_dict.keys())
-        # st.markdown(get_table_download_link(download), unsafe_allow_html=True)
+    # st.markdown(get_table_download_link(download), unsafe_allow_html=True)
     return
 
 
@@ -379,11 +382,11 @@ def completed():
 ismar, isnums = 0, 0
 
 for k,df in df_dict.items():
-    date_search = [g for g in df.index.tolist() if re.search("(Mar|Apr|Sept?|Oct|Dec)", g)] # dates
+    date_search = [g for g in df.index.tolist() if re.search("^(?!MARVELD2)^Mar|^Apr|^Sept?|^Oct|^Dec", g, flags=re.I)] # dates
     old_symbols = list(reference_symbols['Previous Symbol'])
     old_search = list(set(df.index.tolist()).intersection(set(old_symbols))) # easy way to find old symbols in df index
     if len(date_search) != 0:
-        march_search = [m for m in date_search if re.search("^Mar-0?1|0?1-Mar|Mar-0?2|0?2-Mar", m)] # only march genes
+        march_search = [m for m in date_search if re.search("^(?!MARVELD2)^Mar-0?1|^0?1-Mar|^Mar-0?2|^0?2-Mar", m, flags=re.I)] # only march genes
         if len(march_search) != 0:
             ismar += 1
             if ismar == 1:
@@ -396,14 +399,14 @@ for k,df in df_dict.items():
         nodates(df) # converts old to new (eg. DEC1 -> DELEC1)
 
     elif len(date_search) == 0 and len(old_search) == 0:
-        numdate = [g for g in df.index.tolist() if re.search("^\d*[-/]?\W", g)]
+        numdate = [g for g in df.index.tolist() if re.search("^\d*[-/]?\W", g, flags=re.I)]
         if len(numdate) != 0:
             isnums += 1
             if isnums == 1:
                 st.subheader("Resolve Date Format")
             renamed = numeric_date(k,df,numdate)
-            march_search = [m for m in renamed.index.tolist() if re.search("^Mar-0?1|0?1-Mar|Mar-0?2|0?2-Mar", m)]  # only march genes
-            generic_date = [g for g in renamed.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g)]
+            march_search = [m for m in renamed.index.tolist() if re.search("^Mar-0?1|0?1-Mar|Mar-0?2|0?2-Mar", m, flags=re.I)]  # only march genes
+            generic_date = [g for g in renamed.index.tolist() if re.search("Mar|Apr|Sept?|Oct|Dec", g, flags=re.I)]
             if len(march_search) != 0:
                 ismar += 1
                 if ismar == 1:
