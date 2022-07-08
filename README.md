@@ -16,9 +16,15 @@ Users can key in the genes of interest (e.g. MARCHF1) to inspect if the gene exp
 
 # Running the tool locally
 ## Technical requirements
+To run the program locally, please install the following:
+1. Install Python 3.7 (or later) at https://www.python.org/downloads/
+2. Install any text editor (e.g. Sublime or Visual Studio Code) to allow editing of Python (.py) files 
 
-
-
+## Installing Streamlit locally
+To install Streamlit, run the following code in terminal:
+```
+pip install streamlit
+```
 
 
 
