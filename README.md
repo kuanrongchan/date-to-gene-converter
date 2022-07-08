@@ -81,5 +81,5 @@ streamlit run date_gene_tool.py
 ```
 
 # Credits
-This app is developed by Clara Koh, Justin Ooi and Kuan Rong Chan from Duke-NUS Medical School, Singapore. For more details on what we do, please visit our website at "kuanrongchan.com"
+This app is developed by Clara Koh, Justin Ooi and Kuan Rong Chan from Duke-NUS Medical School, Singapore. For more details on what we do, please visit our website at: "kuanrongchan.com"
 
