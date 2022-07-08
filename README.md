@@ -15,9 +15,9 @@ When there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st a
 Users can key in the genes of interest (e.g. MARCHF1) to inspect if the gene expression data has indeed been updated with the new gene names. 
 
 # Running the tool locally
-Once the user has downloaded this repository, requirements should be installed and the script run with the following codes in the command line:
+Once the user has downloaded this repository, requirements should be installed and the script run with the following codes in the command line.
 ```
-pip install -r requirements.txt
 cd path/to/folder
+pip install -r requirements.txt
 streamlit run date_gene_tool.py
 ```
