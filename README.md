@@ -14,9 +14,11 @@ When there are duplicate Mar-01 values, Mar-01 will be annotated as Mar-01_1st a
 # Checking converted dataframes
 Users can key in the genes of interest (e.g. MARCHF1) to inspect if the gene expression data has indeed been updated with the new gene names. 
 
-# Running the tool locally
+# Running the Gene Updater tool locally
+Please execute the following steps to run the Gene Updater tool locally
+
 ## Technical requirements
-To run the program locally, please install the following:
+Please install the following:
 1. Install Python 3.7 (or later) at https://www.python.org/downloads/
 2. Install any text editor (e.g. Sublime or Visual Studio Code) to allow editing of Python (.py) files 
 
@@ -26,6 +28,24 @@ To install Streamlit, run the following code in terminal:
 pip install streamlit
 ```
 
+## Organizing Streamlit apps locally
+To create a new folder called streamlit_apps and make it our current directory, type the following in the terminal:
+```
+mkdir streamlit_apps
+cd streamlit_apps
+```
+
+## Creating date_gene_tool.py file locally
+Execute the following commands in the terminal:
+```
+mkdir date_gene_tool
+cd date_gene_tool
+touch date_gene_tool
+```
+
+This will generate a local file named that is named as date_gene_tool.py. 
+After locating the date_gene_tool.py file, open the file in text editor (e.g. Sublime or Visual Studio Code)
+When you open the file, copy and paste the codes that is located at??????
 
 
 Once the user has downloaded this repository, requirements should be installed and the script run with the following codes in the command line.
