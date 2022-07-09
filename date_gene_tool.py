@@ -207,7 +207,7 @@ def march_resolver(dfs):
 
         with each_df_exp:
             st.write(f"**MAR01 Genes: {k} Dataframe**")
-            st.info("Genes like MARCH1 and MARC1 have to be differentiated by function as they are both corrected to Mar-01 in Excel."
+            st.info("Genes like MARCH1 and MARC1 have to be differentiated by another identifier (e.g. Gene description) as they are both corrected to Mar-01 in Excel."
                              " Check HGNC symbol reference in the sidebar for reference. 👈")
             st.dataframe(mar1_df.astype(str))
 
@@ -231,7 +231,7 @@ def march_resolver(dfs):
 
         each_df_exp.write(f"**MAR02 Genes: {k} Dataframe**")
         each_df_exp.info(
-            "Genes like MARCH2 and MARC2 have to be differentiated by function as they are both corrected to Mar-01 in Excel."
+            "Genes like MARCH2 and MARC2 have to be differentiated by another identifier (e.g. Gene description) as they are both corrected to Mar-01 in Excel."
             " Check old and new HGNC symbols in the sidebar for reference. 👈")
         each_df_exp.dataframe(mar2_df.astype(str))
 
