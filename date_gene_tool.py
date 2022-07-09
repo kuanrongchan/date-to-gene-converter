@@ -36,7 +36,7 @@ if st.sidebar.checkbox("Read the Docs", value=False):
         ## Instructions for using web tool
 
         ### Data Upload
-        Users can upload a single or multiple .csv or .xlsx files. Ensure that the first column contains the gene names. A checkbox is provided for users to inspect their uploaded data. If no data is uploaded, a demo dataset consisting of a restricted list of genes are pre-loaded. Users may use the pre-loaded demo dataset to explore the features and functionalities of the web tool.
+        Users can upload a single or multiple .csv or .xlsx files. Ensure that the first column contains the gene names. If the gene file contains Mar-01 and Mar-02, we encourage having a gene description column on the second column so that the identities of MARCH1/MARC1 and MARCH2/MARC2 can be easily resolved with the web tool. A checkbox is provided for users to inspect their uploaded data. If no data is uploaded, a demo dataset consisting of a restricted list of genes are pre-loaded. Users may use the pre-loaded demo dataset to explore the features and functionalities of the web tool.
         
         ### Updating Outdated Date-related Gene Names
         If the first column contains the old gene names, these genes will be updated to the new gene names using the webtool. If the first column contains dates, they will be converted to the updated gene names, with the exception of Mar-01 and Mar-02 as these terms can be mapped to more than one gene.
