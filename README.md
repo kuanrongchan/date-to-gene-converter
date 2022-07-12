@@ -63,7 +63,7 @@ When you open the file, copy and paste the codes that is located at: "https://gi
 Remember to save the file after typing in the codes.
 
 ## Downloading demo and HGNC symbol conversion files
-In the GitHub address (https://github.com/kuanrongchan/date-to-gene-converter), download the following 2 files within the date_gene_tool folder, created at step 55-56 (together with the date_gene_tool.py file):
+In the GitHub address (https://github.com/kuanrongchan/date-to-gene-converter), download the following 2 files within the date_gene_tool folder (together with the date_gene_tool.py file):
 1. demo.csv
 2. hgnc-symbol-check2.csv
 
@@ -85,6 +85,8 @@ cd path/to/folder
 pip install -r requirements.txt
 streamlit run date_gene_tool.py
 ```
+
+Note that users can also directly download all the files within GitHub in the ZIP file format by pressing the "Code" dropdown widget to run the program locally.
 
 # Credits
 This app is developed by Clara Koh, Justin Ooi and Kuan Rong Chan from Duke-NUS Medical School, Singapore. For more details on what we do, please visit our website at: [kuanrongchan.com](https://www.kuanrongchan.com/)
