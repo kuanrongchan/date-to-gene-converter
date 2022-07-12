@@ -28,6 +28,20 @@ To install Streamlit, run the following code in terminal:
 pip install streamlit
 ```
 
+## Installing packages for date_gene_tool
+Install the following packages locally by typing the following commands in terminal:
+```
+pip install pandas
+pip install numpy
+pip install regex
+pip install inflect
+pip install pybase64
+pip install zip-files
+pip install dateparser
+pip install DateTime
+pip install streamlit-tags
+```
+
 ## Organizing Streamlit apps locally
 To create a new folder called streamlit_apps and make it our current directory, type the following in the terminal:
 ```
@@ -48,19 +62,11 @@ After locating the date_gene_tool.py file, open the file in text editor (e.g. Su
 When you open the file, copy and paste the codes that is located at: "https://github.com/kuanrongchan/date-to-gene-converter/blob/main/date_gene_tool.py"
 Remember to save the file after typing in the codes.
 
-## Installing packages for date_gene_tool
-Install the following packages locally by typing the following commands in terminal:
-```
-pip install pandas
-pip install numpy
-pip install regex
-pip install inflect
-pip install pybase64
-pip install zip-files
-pip install date parser
-pip install DateTime
-pip install streamlit-tags
-```
+## Downloading demo and HGNC symbol conversion files
+In the GitHub address (https://github.com/kuanrongchan/date-to-gene-converter), download the following 2 files within the date_gene_tool folder (together with the date_gene_tool.py file):
+1. demo.csv
+2. hgnc-symbol-check2.csv
+
 
 ## Running Gene Updater tool locally
 You can run the program locally by typing in terminal:
