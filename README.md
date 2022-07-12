@@ -63,7 +63,7 @@ When you open the file, copy and paste the codes that is located at: "https://gi
 Remember to save the file after typing in the codes.
 
 ## Downloading demo and HGNC symbol conversion files
-In the GitHub address (https://github.com/kuanrongchan/date-to-gene-converter), download the following 2 files within the date_gene_tool folder (together with the date_gene_tool.py file):
+In the GitHub address (https://github.com/kuanrongchan/date-to-gene-converter), download the following 2 files within the date_gene_tool folder, created at step 55-56 (together with the date_gene_tool.py file):
 1. demo.csv
 2. hgnc-symbol-check2.csv
 
