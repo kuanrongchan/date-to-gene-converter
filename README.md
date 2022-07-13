@@ -35,10 +35,10 @@ pip install pandas
 pip install numpy
 pip install regex
 pip install inflect
-pip install pybase64
-pip install zip-files
 pip install dateparser
-pip install DateTime
+pip install openpyxl
+pip install xlrd
+pip install XlsxWriter
 pip install streamlit-tags
 ```
 
