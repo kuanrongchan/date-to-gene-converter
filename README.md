@@ -78,7 +78,7 @@ This should open a new tab with the Gene Updater app appearing in your default b
 
 
 ## Summary
-In summary, to run the file locally, please download this repoistory, install the requirements and run the script with the following codes in the command line
+In summary, to run the file locally, please download this repository, install the requirements and run the script with the following codes in the command line
 
 ```
 cd path/to/folder
