@@ -58,8 +58,10 @@ touch date_gene_tool
 ```
 
 This will generate a local file named that is named as date_gene_tool.py. 
-After locating the date_gene_tool.py file, open the file in text editor (e.g. Sublime or Visual Studio Code)
-When you open the file, copy and paste the codes that is located at: "https://github.com/kuanrongchan/date-to-gene-converter/blob/main/date_gene_tool.py"
+After locating the date_gene_tool.py file, open the file in text editor (e.g. Sublime or Visual Studio Code).
+
+When you open the file, copy and paste the codes that is located at: https://github.com/kuanrongchan/date-to-gene-converter/blob/main/date_gene_tool.py.
+
 Remember to save the file after typing in the codes.
 
 ## Downloading demo and HGNC symbol conversion files
