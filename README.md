@@ -90,7 +90,7 @@ streamlit run date_gene_tool.py
 
 Note that users can also directly download all the files within GitHub in the ZIP file format by pressing the "Code" dropdown widget to run the program locally.
 
-You may also access the files from Zenodo
+You may also access the files directly from Zenodo
 [![DOI](https://zenodo.org/badge/431391415.svg)](https://zenodo.org/badge/latestdoi/431391415)
 
 # Credits
