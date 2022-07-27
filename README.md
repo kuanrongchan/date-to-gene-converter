@@ -98,6 +98,7 @@ This app is developed by Clara Koh, Justin Ooi and Kuan Rong Chan from Duke-NUS 
 
 # Citation
 To cite your use of Gene Updater, please reference this article:
+
 Koh, C.W.T., Ooi, J.S.G., Joly, G.L.C. et al. Gene Updater: a web tool that autocorrects and updates for Excel misidentified gene names. Sci Rep 12, 12743 (2022). https://doi.org/10.1038/s41598-022-17104-3
 
 
