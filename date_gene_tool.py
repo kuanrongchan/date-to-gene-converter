@@ -155,7 +155,8 @@ corrected = {"DEC-01_1st": "DELEC1", "01-DEC_1st":"DELEC1", "MAR-03_1st": "MARCH
              "SEP-06_1st": "SEPTIN6", "06-SEP_1st":"SEPTIN6", "SEP-07_1st": "SEPTIN7", "07-SEP_1st":"SEPTIN7",
              "SEP-08_1st": "SEPTIN8", "08-SEP_1st":"SEPTIN8", "SEP-09_1st": "SEPTIN9", "09-SEP_1st":"SEPTIN9",
              "SEP-10_1st": "SEPTIN10", "10-SEP_1st":"SEPTIN10", "SEP-11_1st": "SEPTIN11", "11-SEP_1st":"SEPTIN11",
-             "SEP-12_1st": "SEPTIN12", "12-SEP_1st":"SEPTIN12", "SEP-14_1st": "SEPTIN14", "14-SEP_1st":"SEPTIN14",
+             "SEP-12_1st": "SEPTIN12", "12-SEP_1st":"SEPTIN12", "SEP-13_1st":"SEPTIN7P2", "13-SEP_1st":"SEPTIN7P2",
+             "SEP-14_1st": "SEPTIN14", "14-SEP_1st":"SEPTIN14",
 
              "Dec-01_1st": "DELEC1", "01-Dec_1st":"DELEC1", "Mar-03_1st": "MARCHF3", "03-Mar_1st":"MARCHF3",
              "Mar-04_1st": "MARCHF4", "04-Mar_1st":"MARCHF4", "Mar-05_1st": "MARCHF5", "05-Mar_1st":"MARCHF5",
@@ -168,7 +169,8 @@ corrected = {"DEC-01_1st": "DELEC1", "01-DEC_1st":"DELEC1", "MAR-03_1st": "MARCH
              "Sep-06_1st": "SEPTIN6", "06-Sep_1st":"SEPTIN6", "Sep-07_1st": "SEPTIN7", "07-Sep_1st":"SEPTIN7",
              "Sep-08_1st": "SEPTIN8", "08-Sep_1st":"SEPTIN8", "Sep-09_1st": "SEPTIN9", "09-Sep_1st":"SEPTIN9",
              "Sep-10_1st": "SEPTIN10", "10-Sep_1st":"SEPTIN10", "Sep-11_1st": "SEPTIN11", "11-Sep_1st":"SEPTIN11",
-             "Sep-12_1st": "SEPTIN12", "12-Sep_1st":"SEPTIN12", "Sep-14_1st": "SEPTIN14", "14-Sep_1st":"SEPTIN14"
+             "Sep-12_1st": "SEPTIN12", "12-Sep_1st":"SEPTIN12", "Sep-13_1st":"SEPTIN7P2", "13-Sep_1st":"SEPTIN7P2",
+             "Sep-14_1st": "SEPTIN14", "14-Sep_1st":"SEPTIN14"
                  }
 
 misidentified = None
